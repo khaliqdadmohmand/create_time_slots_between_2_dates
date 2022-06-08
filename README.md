@@ -3,6 +3,8 @@ Get all Time Slots (30 Minuts Interval) Between Start and End Time in Android St
 
 create time slots  between to particular times means create time slots between start and end time.
 
+watch video
+[![Watch the video](https://i.imgur.com/f109b9bNcmM.png)](https://youtu.be/f109b9bNcmM)
 ```
 private void getSlots() {
         slots = new ArrayList<>();
