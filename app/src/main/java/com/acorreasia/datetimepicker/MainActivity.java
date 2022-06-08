@@ -6,78 +6,75 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TimePicker;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    final Calendar myCalendar = Calendar.getInstance();
-    private EditText datePciker, timePicker;
+    EditText startDate, endDate, startTime, endTime, interval;
+    ListView listView;
+    List<String> slots;
+    Button generate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        
-        datePciker = findViewById(R.id.date_picker);
-        timePicker = findViewById(R.id.time_picker);
-        selectDate();
 
-        timePicker.setOnClickListener(v->selectTime());
+        startDate = findViewById(R.id.start_date);
+        endDate = findViewById(R.id.end_date);
+        startTime = findViewById(R.id.start_time);
+        endTime = findViewById(R.id.end_time);
+        interval =findViewById(R.id.interval);
+        listView = findViewById(R.id.list);
+        generate = findViewById(R.id.generate);
+
+        generate.setOnClickListener(v->getSlots());
 
     }
 
-    private void selectDate(){
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                myCalendar.set(Calendar.YEAR,year);
-                myCalendar.set(Calendar.MONTH, month);
-                myCalendar.set(Calendar.DAY_OF_MONTH,day);
+    private void getSlots() {
+        slots = new ArrayList<>();
+        try {
+        String format = "yyyy-MM-dd HH:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
 
-                datePciker.setText(updateDate());
-            }
-        };
+        Date dateObj2 = null;
 
-        datePciker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new DatePickerDialog(MainActivity.this, date, myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        Date dateObj1 = sdf.parse(startDate.getText().toString()+" "+startTime.getText().toString());
+        dateObj2 = sdf.parse(endDate.getText().toString()+" "+endTime.getText().toString());
 
-            }
-        });
+        long dif = dateObj1.getTime();
+
+        while (dif< dateObj2.getTime()){
+
+            Date slot = new Date(dif);
+            String sformat = "HH:mm a";
+            SimpleDateFormat dateFormat = new SimpleDateFormat(sformat, Locale.US);
+
+            slots.add(dateFormat.format(slot));
+
+
+            dif += Integer.parseInt(String.valueOf(interval.getText().toString())) * 60000;
+        }
+
+            ArrayAdapter<String> arr = new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item, slots);
+            listView.setAdapter(arr);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
-    private String updateDate(){
-        String myFormat = "yyyy-MM-dd";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        return  dateFormat.format(myCalendar.getTime());
-    }
-
-    //lets create time picker
-    private void selectTime(){
-        Calendar currentTime = Calendar.getInstance();
-        int hour = currentTime.get(Calendar.HOUR_OF_DAY);
-        int minut = currentTime.get(Calendar.MINUTE);
-        TimePickerDialog timePickerDialog;
-        timePickerDialog = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hour, int minut) {
-                currentTime.set(Calendar.HOUR_OF_DAY,hour);
-                currentTime.set(Calendar.MINUTE,minut);
-
-                String myFormat = "HH:mm:ss";
-                SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-                timePicker.setText(dateFormat.format(currentTime.getTime()));
-
-            }
-        },hour,minut,true);
-        timePickerDialog.setTitle("Select Time");
-        timePickerDialog.show();
-    }
 }

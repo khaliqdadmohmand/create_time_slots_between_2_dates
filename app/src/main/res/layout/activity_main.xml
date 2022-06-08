@@ -4,32 +4,92 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:gravity="center"
     android:padding="20dp"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/date_picker"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableRight="@android:drawable/ic_menu_my_calendar"
-        android:clickable="false"
-        android:cursorVisible="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:hint="select date" />
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/start_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:hint="start date"
+            android:padding="10dp"
+            android:background="@color/white"
+            android:layout_weight="1"/>
+        <EditText
+            android:id="@+id/end_date"
+            android:layout_width="0dp"
+            android:layout_marginHorizontal="5dp"
+            android:hint="end date"
+            android:padding="10dp"
+            android:background="@color/white"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/time_picker"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:drawableRight="@android:drawable/ic_menu_recent_history"
-        android:clickable="false"
-        android:cursorVisible="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:hint="select date" />
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/start_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:hint="start time"
+            android:padding="10dp"
+            android:background="@color/white"
+            android:layout_weight="1"/>
+        <EditText
+            android:id="@+id/end_time"
+            android:layout_width="0dp"
+            android:layout_marginHorizontal="5dp"
+            android:hint="end time"
+            android:padding="10dp"
+            android:background="@color/white"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/interval"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:hint="Time interval"
+            android:inputType="number"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/generate"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Generate Slots" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"/>
 
 </LinearLayout>
